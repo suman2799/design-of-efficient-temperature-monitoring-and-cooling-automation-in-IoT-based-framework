@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>IoT MQTT Subscriber</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="section">
+      <h1>Subscribe to IoT MQTT Broker</h1>
+      <form action="/subscribe" method="post" onload="none">
+        <label for="broker">Broker IP:</label>
+        <input type="text" id="broker" name="broker"><br>
+        <label for="port">Port:</label>
+        <input type="text" id="port" name="port"><br>
+        <label for="topics">Topics (comma-separated):</label>
+        <input type="text" id="topics" name="topics"><br>
+        <input type="submit" value="Subscribe" onclick="showAlert()">
+      </form>
+    </div>
+    <div class="section">
+      <h1>Received IoT MQTT Messages</h1>
+      <div class="messages-container">
+        <ul id="messages">
+          <!-- IoT MQTT messages will be displayed here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
+    
+
+    // WebSocket handling for MQTT messages remains the same...
+    const socket = new WebSocket('ws://localhost:3000');
+    const messageList = document.getElementById('messages');
+
+    socket.onmessage = function (event) {
+      const msg = JSON.parse(event.data);
+      const listItem = `<li>Time: ${msg.timestamp}, Topic: ${msg.topic}, Message: ${msg.payload}</li>`;
+      messageList.insertAdjacentHTML('afterbegin', listItem);
+    }
+  </script>
+</body>
+
+</html>
+
